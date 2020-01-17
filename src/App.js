@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
 
 import "./App.css";
 
+import { connect } from "react-redux";
 import Header from "./components/header/Header";
 import { HomePage } from "./pages/HomePage/HomePage";
 import Shop from "./pages/shop/Shop";
