@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 import styles from "./header.module.scss";
 import { auth } from "./../../firebase/firebase.utils";
 
+import CartIcon from "./../cart-icon/CartIcon";
+import { CartDropdown } from "./../cart-dropdown/CartDropdown";
+
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
   return (
     <div className={styles.header}>
       <Link to="/" className={styles.logo__container}>
@@ -31,14 +34,18 @@ const Header = ({ currentUser }) => {
             SIGN IN
           </Link>
         )}
+
+        <CartIcon />
       </div>
+      {hidden ? null : <CartDropdown />}
     </div>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => {
   return {
-    currentUser: state.user.currentUser
+    currentUser,
+    hidden
   };
 };
 
