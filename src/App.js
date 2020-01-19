@@ -9,7 +9,7 @@ import { HomePage } from "./pages/HomePage/HomePage";
 import Shop from "./pages/shop/Shop";
 import SignInUp from "./pages/sign-in-up/SignInUp";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
-import { setCurrentUser } from "./redux/actions/user-action";
+import { setCurrentUser } from "./redux/user/user-action";
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
