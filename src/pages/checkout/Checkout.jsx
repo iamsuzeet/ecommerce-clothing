@@ -22,6 +22,9 @@ const Checkout = ({ cartItems, total }) => {
         </div>
         <div className={styles.HeaderBlock}>
           <span>Quantity</span>
+        </div>{" "}
+        <div className={styles.HeaderBlock}>
+          <span>Price</span>
         </div>
         <div className={styles.HeaderBlock}>
           <span>Remove</span>
