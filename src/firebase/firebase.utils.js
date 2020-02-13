@@ -14,11 +14,17 @@ const config = {
   measurementId: "G-NXMEY9TQPT"
 };
 
+//initialization start here
+firebase.initializeApp(config);
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   // if null
   if (!userAuth) return;
 
   const userRef = await firestore.doc(`users/${userAuth.uid}`);
+  // const collectionRef = await firestore.collection("users");
+  // const collectionSnapshot = await collectionRef.get();
+  // console.log({ collection: collectionSnapshot.docs.map(coll => coll.data()) });
 
   const snapShot = await userRef.get();
 
@@ -41,8 +47,38 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-//initialization start here
-firebase.initializeApp(config);
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();
+    console.log(newDocRef);
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshopToMap = collections => {
+  const transformedCollection = collections.docs.map(doc => {
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    };
+  });
+  return transformedCollection.reduce((reduced, collection) => {
+    reduced[collection.title.toLowerCase()] = collection;
+    return reduced;
+  }, {});
+};
 
 //for auth and firestore access
 export const auth = firebase.auth();
