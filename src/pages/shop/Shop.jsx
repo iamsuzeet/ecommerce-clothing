@@ -10,7 +10,17 @@ import {
 import { connect } from "react-redux";
 import { updateCollections } from "./../../redux/shop/shop-action";
 
+//higher order components
+import withSpinner from "./../../components/with-spinner/withSpinner";
+
+const CollectionsOverviewWithSpinner = withSpinner(CollectionOverview);
+const CollectionWithSpinner = withSpinner(Collection);
+
 class Shop extends React.Component {
+  state = {
+    loading: true
+  };
+
   unsubscribeFromSnapshot = null;
 
   componentDidMount() {
@@ -20,15 +30,29 @@ class Shop extends React.Component {
     collectionRef.onSnapshot(async snapshot => {
       const collectionsMap = convertCollectionsSnapshopToMap(snapshot);
       updateCollections(collectionsMap);
+      this.setState({ loading: false });
     });
   }
 
   render() {
     const { match } = this.props;
+    const { loading } = this.state;
+
     return (
       <div>
-        <Route exact path={`${match.path}`} component={CollectionOverview} />
-        <Route path={`${match.path}/:collectionId`} component={Collection} />
+        <Route
+          exact
+          path={`${match.path}`}
+          render={props => (
+            <CollectionsOverviewWithSpinner isLoading={loading} {...props} />
+          )}
+        />
+        <Route
+          path={`${match.path}/:collectionId`}
+          render={props => (
+            <CollectionWithSpinner isLoading={loading} {...props} />
+          )}
+        />
       </div>
     );
   }
